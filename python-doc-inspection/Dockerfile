@@ -3,6 +3,8 @@ FROM amazonlinux:2017.03.1.20170812 as builder
 
 COPY lib/* /python-doc-inspection-runtime/lib/
 COPY bin/* /python-doc-inspection-runtime/bin/
+RUN chmod -R +x /python-doc-inspection-runtime/bin/*
+
 
 RUN yum update -y && yum install -y \
     gcc48 \
@@ -79,25 +81,25 @@ RUN yum update -y && yum install -y \
 
 
 RUN python36 -m venv --copies /mylambda && source /mylambda/bin/activate && \
-    mkdir -p /python-doc-inspection-runtime/python && mkdir -p /python-doc-inspection-runtime-vendor/python && \
+    mkdir -p /python-doc-inspection-runtime/python && mkdir -p /python-doc-inspection-runtime-python/python && \
     pip3 install pypdf2 Pillow PyMuPDF pdfminer3 ghostscript camelot-py pikepdf pgmagick beautifulsoup4 python-pptx xlrd pypandoc
 
 
 RUN ls -al /mylambda/lib/python3.6/site-packages
 
-RUN cp -R --recursive /mylambda/lib/python3.6/site-packages/PyPDF2 /python-doc-inspection-runtime-vendor/python/PyPDF2 && \
-    cp -R --recursive /mylambda/lib/python3.6/site-packages/PIL /python-doc-inspection-runtime-vendor/python/PIL && \
-    cp -R --recursive /mylambda/lib/python3.6/site-packages/fitz /python-doc-inspection-runtime-vendor/python/fitz && \
-    cp -R --recursive /mylambda/lib/python3.6/site-packages/pdfminer3 /python-doc-inspection-runtime-vendor/python/pdfminer && \
-    cp -R --recursive /mylambda/lib/python3.6/site-packages/pdfminer3 /python-doc-inspection-runtime-vendor/python/pdfminer3 && \
-    cp -R --recursive /mylambda/lib/python3.6/site-packages/ghostscript /python-doc-inspection-runtime-vendor/python/ghostscript && \
-    cp -R --recursive /mylambda/lib/python3.6/site-packages/camelot /python-doc-inspection-runtime-vendor/python/camelot && \
-    cp -R --recursive /mylambda/lib/python3.6/site-packages/pikepdf /python-doc-inspection-runtime-vendor/python/pikepdf && \
-    cp -R --recursive /mylambda/lib/python3.6/site-packages/pgmagick /python-doc-inspection-runtime-vendor/python/pgmagick && \
-    cp -R --recursive /mylambda/lib/python3.6/site-packages/bs4 /python-doc-inspection-runtime-vendor/python/bs4 && \
-    cp -R --recursive /mylambda/lib/python3.6/site-packages/pptx /python-doc-inspection-runtime-vendor/python/pptx && \
-    cp -R --recursive /mylambda/lib/python3.6/site-packages/xlrd /python-doc-inspection-runtime-vendor/python/xlrd && \
-    cp -R --recursive /mylambda/lib/python3.6/site-packages/pypandoc /python-doc-inspection-runtime-vendor/python/pypandoc
+RUN cp -R --recursive /mylambda/lib/python3.6/site-packages/PyPDF2 /python-doc-inspection-runtime-python/python/PyPDF2 && \
+    cp -R --recursive /mylambda/lib/python3.6/site-packages/PIL /python-doc-inspection-runtime-python/python/PIL && \
+    cp -R --recursive /mylambda/lib/python3.6/site-packages/fitz /python-doc-inspection-runtime-python/python/fitz && \
+    cp -R --recursive /mylambda/lib/python3.6/site-packages/pdfminer3 /python-doc-inspection-runtime-python/python/pdfminer && \
+    cp -R --recursive /mylambda/lib/python3.6/site-packages/pdfminer3 /python-doc-inspection-runtime-python/python/pdfminer3 && \
+    cp -R --recursive /mylambda/lib/python3.6/site-packages/ghostscript /python-doc-inspection-runtime-python/python/ghostscript && \
+    cp -R --recursive /mylambda/lib/python3.6/site-packages/camelot /python-doc-inspection-runtime-python/python/camelot && \
+    cp -R --recursive /mylambda/lib/python3.6/site-packages/pikepdf /python-doc-inspection-runtime-python/python/pikepdf && \
+    cp -R --recursive /mylambda/lib/python3.6/site-packages/pgmagick /python-doc-inspection-runtime-python/python/pgmagick && \
+    cp -R --recursive /mylambda/lib/python3.6/site-packages/bs4 /python-doc-inspection-runtime-python/python/bs4 && \
+    cp -R --recursive /mylambda/lib/python3.6/site-packages/pptx /python-doc-inspection-runtime-python/python/pptx && \
+    cp -R --recursive /mylambda/lib/python3.6/site-packages/xlrd /python-doc-inspection-runtime-python/python/xlrd && \
+    cp -R --recursive /mylambda/lib/python3.6/site-packages/pypandoc /python-doc-inspection-runtime-python/python/pypandoc
 
 
 
@@ -125,4 +127,4 @@ FROM lambci/lambda:provided as runtime
 COPY --from=builder /python-doc-inspection-runtime /opt/
 
 # Layer 2
-COPY --from=builder /python-doc-inspection-runtime-vendor /opt/vendor
+COPY --from=builder /python-doc-inspection-runtime-python /opt/
