@@ -6,7 +6,6 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: echo $DOCKER_HOST
       - restore_cache:
           keys:
             - v2-{{ .Branch }}
@@ -45,11 +44,9 @@ jobs:
           command: |
             wget https://github.com/awslabs/aws-lambda-container-image-converter/releases/download/0.1.0/linux-amd64-img2lambda
             chmod +x linux-amd64-img2lambda
-            ls -al
       - run:
           name: Deploy doc-utils-binaries layer
           command: |
-            echo $DOCKER_HOST
             ./linux-amd64-img2lambda -n doc-utils-binaries -i doc-utils-binaries:latest -r us-west-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give extra binaries relevant for document inspection/extraction Part 1 of 2"
       - run:
           name: Deploy doc-utils-pythonlibs layer
