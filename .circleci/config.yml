@@ -13,8 +13,7 @@ jobs:
           name: download img2lambda
           command: |
             apk update
-            apk add ca-certificates
-            update-ca-certificates
+            apk --no-cache add openssl
             wget https://github.com/awslabs/aws-lambda-container-image-converter/releases/download/0.1.0/linux-amd64-img2lambda
             chmod +x linux-amd64-img2lambda
       - restore_cache:
