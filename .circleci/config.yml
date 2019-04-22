@@ -40,13 +40,7 @@ jobs:
           command: |
             cd doc-utils-pythonlibs && docker build -t doc-utils-pythonlibs . && cd ..
       - run: sleep 90
-      - run: docker ps -a
-
-  deploy:
-    machine:
-      enabled: true
-    steps:
-      - run: docker ps -a
+      - run: docker images
       - run:
           name: download img2lambda
           command: |
@@ -61,11 +55,3 @@ jobs:
           name: Deploy doc-utils-pythonlibs layer
           command: |
             sudo ./linux-amd64-img2lambda -n doc-utils-pythonlibs -i doc-utils-pythonlibs:latest -r us-west-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give pip libs relevant for document inspection/extraction Part 2 of 2"
-workflows:
-  version: 2
-  build_and_deploy:
-    jobs:
-      - build
-      - deploy:
-          requires:
-            - build
