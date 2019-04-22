@@ -6,6 +6,7 @@ jobs:
     docker:
       - image: circleci/buildpack-deps:latest
     steps:
+      - run: echo $DOCKER_HOST
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
