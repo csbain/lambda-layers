@@ -6,7 +6,9 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: cat ~/.aws/config
+      - run:
+          name: Install awscli
+          command: sudo apt -y -qq install awscli
       - restore_cache:
           keys:
             - v2-{{ .Branch }}
