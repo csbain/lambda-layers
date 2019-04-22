@@ -3,13 +3,18 @@ orbs:
   aws-cli: circleci/aws-cli@0.1.13
 jobs:
   build:
-    docker:
-      - image: circleci/buildpack-deps:latest
+  machine: true
     steps:
-      - run: echo $DOCKER_HOST
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="18.09.3"
+            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            sudo cp -r /tmp/docker/* /usr/bin
+      - run: echo $DOCKER_HOST
       - restore_cache:
           keys:
             - v2-{{ .Branch }}
