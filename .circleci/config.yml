@@ -17,14 +17,14 @@ jobs:
             ls -al
       - restore_cache:
           keys:
-            - v1-{{ .Branch }}
+            - v2-{{ .Branch }}
           paths:
-            - /caches/doc-utils-common.tar
+            - ~/caches/doc-utils-common.tar
       - run:
           name: Load Docker image layer cache
           command: |
             set +o pipefail
-            docker load -i /caches/doc-utils-common.tar | true
+            docker load -i ~/caches/doc-utils-common.tar | true
       - run:
           name: Build doc-utils-common Docker image
           command: |
@@ -32,12 +32,12 @@ jobs:
       - run:
           name: Save Docker image layer cache
           command: |
-            mkdir -p /caches
-            docker save -o /caches/doc-utils-common.tar doc-utils-common
+            mkdir -p ~/caches
+            docker save -o ~/caches/doc-utils-common.tar doc-utils-common
       - save_cache:
-          key: v1-{{ .Branch }}-{{ epoch }}
+          key: v2-{{ .Branch }}-{{ epoch }}
           paths:
-            - /caches/doc-utils-common.tar
+            - ~/caches/doc-utils-common.tar
       - run:
           name: Build doc-utils-binaries Docker image
           command: |
