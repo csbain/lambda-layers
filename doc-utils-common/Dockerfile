@@ -1,8 +1,8 @@
 # Same AL version as Lambda execution environment AMI
 FROM amazonlinux:2017.03.1.20170812 as builder
 
-COPY ../doc-utils-common/lib /tmpbuild/lib/
-COPY ../doc-utils-common/bin /tmpbuild/bin/
+COPY lib /tmpbuild/lib/
+COPY bin /tmpbuild/bin/
 RUN chmod -R +x /tmpbuild/bin/*
 
 RUN yum update -y && yum install -y \
