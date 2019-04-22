@@ -1,11 +1,6 @@
 # Same AL version as Lambda execution environment AMI
 FROM amazonlinux:2017.03.1.20170812 as builder
 
-COPY lib/* /tmpbuild//lib/
-COPY bin/* /tmpbuild//bin/
-RUN chmod -R +x /tmpbuild/bin/*
-
-
 RUN yum update -y && yum install -y \
     gcc48 \
     gcc48-c++ \
