@@ -6,6 +6,7 @@ jobs:
     machine: true
     steps:
       - checkout
+      - run: cat ~/.aws/config
       - restore_cache:
           keys:
             - v2-{{ .Branch }}
