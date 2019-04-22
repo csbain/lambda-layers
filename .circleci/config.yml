@@ -11,10 +11,11 @@ jobs:
           name: Install Docker client
           command: |
             set -x
-            VER="17.12.1-ce"
-            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
-            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-            mv /tmp/docker/* /usr/bin
+            VER="18.09.3"
+            sudo curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+            sudo tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            sudo cp -r /tmp/docker/* /usr/bin
+            unset DOCKER_HOST
       - restore_cache:
           keys:
             - v2-{{ .Branch }}
@@ -24,16 +25,16 @@ jobs:
           name: Load Docker image layer cache
           command: |
             set +o pipefail
-            docker load -i ~/caches/doc-utils-common.tar | true
+            sudo docker load -i ~/caches/doc-utils-common.tar | true
       - run:
           name: Build doc-utils-common Docker image
           command: |
-            cd doc-utils-common && docker build --cache-from=doc-utils-common -t doc-utils-common . && cd ..
+            cd doc-utils-common && sudo docker build --cache-from=doc-utils-common -t doc-utils-common . && cd ..
       - run:
           name: Save Docker image layer cache
           command: |
             mkdir -p ~/caches
-            docker save -o ~/caches/doc-utils-common.tar doc-utils-common
+            sudo docker save -o ~/caches/doc-utils-common.tar doc-utils-common
       - save_cache:
           key: v2-{{ .Branch }}-{{ epoch }}
           paths:
@@ -41,11 +42,11 @@ jobs:
       - run:
           name: Build doc-utils-binaries Docker image
           command: |
-            cd doc-utils-binaries && docker build -t doc-utils-binaries . && cd ..
+            cd doc-utils-binaries && sudo docker build -t doc-utils-binaries . && cd ..
       - run:
           name: Build doc-utils-pythonlibs Docker image
           command: |
-            cd doc-utils-pythonlibs && docker build -t doc-utils-pythonlibs . && cd ..
+            cd doc-utils-pythonlibs && sudo docker build -t doc-utils-pythonlibs . && cd ..
       - run: sleep 90
       - run: docker images
       - run:
