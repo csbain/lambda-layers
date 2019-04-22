@@ -3,10 +3,10 @@ orbs:
   aws-cli: circleci/aws-cli@0.1.13
 jobs:
   build:
-    working_directory: /app
     docker:
       - image: circleci/buildpack-deps:latest
     steps:
+      - run: pwd
       - checkout
       - setup_remote_docker
       - run:
