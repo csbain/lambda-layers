@@ -40,18 +40,12 @@ jobs:
           command: |
             cd doc-utils-pythonlibs && docker build -t doc-utils-pythonlibs . && cd ..
       - run: sleep 90
-      - run: docker service ps doc-utils-binaries
-      - run: docker service ps doc-utils-pythonlibs
-      - run: docker service ls
       - run: docker ps -a
 
   deploy:
     machine:
       enabled: true
     steps:
-      - run: docker service ps doc-utils-binaries
-      - run: docker service ps doc-utils-pythonlibs
-      - run: docker service ls
       - run: docker ps -a
       - run:
           name: download img2lambda
