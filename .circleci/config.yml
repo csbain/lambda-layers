@@ -60,3 +60,6 @@ jobs:
 #          name: Deploy doc-utils-pythonlibs layer
 #          command: |
 #            sudo ./linux-amd64-img2lambda -n doc-utils-pythonlibs -i doc-utils-pythonlibs:latest -r us-west-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give pip libs relevant for document inspection/extraction Part 2 of 2"
+      - store_artifacts:
+          path: output/
+          destination: artifacts
