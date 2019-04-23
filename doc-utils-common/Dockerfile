@@ -48,6 +48,25 @@ RUN yum update -y && yum install -y \
 
 RUN python36 -m venv --copies /mylambda && source /mylambda/bin/activate && \
     mkdir -p /tmpbuild/python && \
-    pip3 install pypdf2 Pillow PyMuPDF pdfminer3 ghostscript camelot-py pikepdf pgmagick beautifulsoup4 python-pptx xlrd pypandoc
+    pip3 install \
+        pypdf2 \
+        Pillow \
+        PyMuPDF \
+        pdfminer3 \
+        ghostscript \
+        camelot-py \
+        pikepdf \
+        beautifulsoup4 \
+        python-pptx \
+        xlrd \
+        pypandoc \
+        python-magic \
+        neomodel \
+        boto3 \
+        botocore \
+        aws-xray-sdk \
+        requests \
+        elasticsearch \
+        requests-aws4auth
 
 
