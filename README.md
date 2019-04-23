@@ -12,3 +12,4 @@ As this is a work in progress - the commit history is quite erratic to test the 
 Currently the circleci build process can only build the binary layer due to size constraints of the python lib layer (when uploaded to aws) - and will most probably be removed as they can be installed through SAM.
 
 
+The library used to create these layers can be found here: https://github.com/awslabs/aws-lambda-container-image-converter
