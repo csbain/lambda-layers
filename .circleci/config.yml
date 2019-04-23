@@ -43,12 +43,10 @@ jobs:
           name: Build doc-utils-binaries Docker image
           command: |
             cd doc-utils-binaries && docker build -t doc-utils-binaries . && cd ..
-      - run:
-          name: Build doc-utils-pythonlibs Docker image
-          command: |
-            cd doc-utils-pythonlibs && docker build -t doc-utils-pythonlibs . && cd ..
-      - run: sleep 90
-      - run: docker images
+#      - run:
+#          name: Build doc-utils-pythonlibs Docker image
+#          command: |
+#            cd doc-utils-pythonlibs && docker build -t doc-utils-pythonlibs . && cd ..
       - run:
           name: download img2lambda
           command: |
@@ -58,7 +56,7 @@ jobs:
           name: Deploy doc-utils-binaries layer
           command: |
             ./linux-amd64-img2lambda -n doc-utils-binaries -i doc-utils-binaries:latest -r us-west-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give extra binaries relevant for document inspection/extraction Part 1 of 2"
-      - run:
-          name: Deploy doc-utils-pythonlibs layer
-          command: |
-            sudo ./linux-amd64-img2lambda -n doc-utils-pythonlibs -i doc-utils-pythonlibs:latest -r us-west-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give pip libs relevant for document inspection/extraction Part 2 of 2"
+#      - run:
+#          name: Deploy doc-utils-pythonlibs layer
+#          command: |
+#            sudo ./linux-amd64-img2lambda -n doc-utils-pythonlibs -i doc-utils-pythonlibs:latest -r us-west-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give pip libs relevant for document inspection/extraction Part 2 of 2"
