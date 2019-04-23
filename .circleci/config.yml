@@ -1,0 +1,62 @@
+version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@0.1.13
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Install awscli
+          command: |
+            sudo apt -y -qq install awscli
+      - run:
+          name: Configure awscli
+          command: |
+            aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+            aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+            aws configure set default.region ${AWS_DEFAULT_REGION}
+      - restore_cache:
+          keys:
+            - v2-{{ .Branch }}
+          paths:
+            - ~/caches/doc-utils-common.tar
+      - run:
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i ~/caches/doc-utils-common.tar | true
+      - run:
+          name: Build doc-utils-common Docker image
+          command: |
+            cd doc-utils-common && docker build --cache-from=doc-utils-common -t doc-utils-common . && cd ..
+      - run:
+          name: Save Docker image layer cache
+          command: |
+            mkdir -p ~/caches
+            docker save -o ~/caches/doc-utils-common.tar doc-utils-common
+      - save_cache:
+          key: v2-{{ .Branch }}-{{ epoch }}
+          paths:
+            - ~/caches/doc-utils-common.tar
+      - run:
+          name: Build doc-utils-binaries Docker image
+          command: |
+            cd doc-utils-binaries && docker build -t doc-utils-binaries . && cd ..
+#      - run:
+#          name: Build doc-utils-pythonlibs Docker image
+#          command: |
+#            cd doc-utils-pythonlibs && docker build -t doc-utils-pythonlibs . && cd ..
+      - run:
+          name: download img2lambda
+          command: |
+            wget https://github.com/awslabs/aws-lambda-container-image-converter/releases/download/0.1.0/linux-amd64-img2lambda
+            chmod +x linux-amd64-img2lambda
+      - run:
+          name: Deploy doc-utils-binaries layer
+          command: |
+            ./linux-amd64-img2lambda -n doc-utils-binaries -i doc-utils-binaries:latest -r us-west-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give extra binaries relevant for document inspection/extraction Part 1 of 2"
+#      - run:
+#          name: Deploy doc-utils-pythonlibs layer
+#          command: |
+#            sudo ./linux-amd64-img2lambda -n doc-utils-pythonlibs -i doc-utils-pythonlibs:latest -r us-west-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give pip libs relevant for document inspection/extraction Part 2 of 2"
