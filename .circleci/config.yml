@@ -55,8 +55,8 @@ jobs:
       - run:
           name: Deploy doc-utils-binaries layer
           command: |
-            ./linux-amd64-img2lambda -n doc-utils-binaries -i docutils-binaries:latest -r us-west-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give extra binaries relevant for document inspection/extraction"
-            ./linux-amd64-img2lambda -n doc-utils-binaries -i docutils-binaries:latest -r ap-southeast-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give extra binaries relevant for document inspection/extraction"
+            ./linux-amd64-img2lambda -n docutils-bin -i doc-utils-binaries:latest -r us-west-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give extra binaries relevant for document inspection/extraction"
+            ./linux-amd64-img2lambda -n docutils-bin -i doc-utils-binaries:latest -r ap-southeast-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give extra binaries relevant for document inspection/extraction"
 #     - store_artifacts:
 #          path: output/
 #          destination: artifacts
