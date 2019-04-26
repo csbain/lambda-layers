@@ -31,6 +31,7 @@ RUN yum update -y && yum install -y \
     tar \
     gzip \
     zip \
+    bc \
     unzip \
     git \
     openjpeg-devel \
