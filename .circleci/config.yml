@@ -61,7 +61,7 @@ jobs:
             wget https://github.com/awslabs/aws-lambda-container-image-converter/releases/download/0.1.0/linux-amd64-img2lambda
             chmod +x linux-amd64-img2lambda
       - run:
-          name: Deploy doc-utils-binaries layer
+          name: Deploy layer
           command: |
             ./linux-amd64-img2lambda -n du-common -i doc-utils-common:latest -r ap-southeast-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give extra binaries relevant for document inspection/extraction"
             ./linux-amd64-img2lambda -n du-imghandler -i doc-utils-imghandler:latest -r ap-southeast-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 specific to images"
