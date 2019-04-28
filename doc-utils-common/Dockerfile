@@ -17,3 +17,10 @@ RUN mkdir -p /tmpbuild/python && \
     cp -R --recursive /mylambda/lib/python3.6/site-packages/aws_xray_sdk /tmpbuild/python/aws_xray_sdk && \
     cp -R --recursive /mylambda/lib/python3.6/site-packages/environs.py /tmpbuild/python/environs.py && \
     cp -R --recursive /mylambda/lib/python3.6/site-packages/neomodel /tmpbuild/python/neomodel
+
+###### Create runtime image ######
+
+FROM lambci/lambda:provided as runtime
+
+# Layer 1
+COPY --from=builder /tmpbuild /opt/
