@@ -2,7 +2,7 @@
 FROM doc-utils-base:latest as builder
 
 RUN cp -R --recursive /mylambda/lib/python3.6/site-packages/numpy /tmpbuild/python/numpy && \
-    cp -R --recursive /mylambda/lib/python3.6/site-packages/cv2 /tmpbuild/python/cv2 && \
+    cp -R --recursive /mylambda/lib/python3.6/site-packages/cv2 /tmpbuild/python/cv2
 
 ###### Create runtime image ######
 
