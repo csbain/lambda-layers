@@ -63,9 +63,9 @@ jobs:
       - run:
           name: Deploy doc-utils-binaries layer
           command: |
-            ./linux-amd64-img2lambda -n docutils-bin -i doc-utils-common:latest -r ap-southeast-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give extra binaries relevant for document inspection/extraction"
-            ./linux-amd64-img2lambda -n docutils-bin -i doc-utils-imghandler:latest -r ap-southeast-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 specific to images"
-            ./linux-amd64-img2lambda -n docutils-bin -i doc-utils-pdfhandler:latest -r ap-southeast-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 specific to PDF's"
+            ./linux-amd64-img2lambda -n du-common -i doc-utils-common:latest -r ap-southeast-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give extra binaries relevant for document inspection/extraction"
+            ./linux-amd64-img2lambda -n du-imghandler -i doc-utils-imghandler:latest -r ap-southeast-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 specific to images"
+            ./linux-amd64-img2lambda -n du-pdfhandler -i doc-utils-pdfhandler:latest -r ap-southeast-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 specific to PDF's"
 #     - store_artifacts:
 #          path: output/
 #          destination: artifacts
