@@ -20,29 +20,37 @@ jobs:
           keys:
             - v2-{{ .Branch }}
           paths:
-            - ~/caches/doc-utils-common.tar
+            - ~/caches/doc-utils-base.tar
       - run:
           name: Load Docker image layer cache
           command: |
             set +o pipefail
-            docker load -i ~/caches/doc-utils-common.tar | true
+            docker load -i ~/caches/doc-utils-base.tar | true
       - run:
-          name: Build doc-utils-common Docker image
+          name: Build doc-utils-base Docker image
           command: |
-            cd doc-utils-common && docker build --cache-from=doc-utils-common -t doc-utils-common . && cd ..
+            docker build --cache-from=doc-utils-base -t doc-utils-base doc-utils-base/.
       - run:
           name: Save Docker image layer cache
           command: |
             mkdir -p ~/caches
-            docker save -o ~/caches/doc-utils-common.tar doc-utils-common
+            docker save -o ~/caches/doc-utils-base.tar doc-utils-base
       - save_cache:
           key: v2-{{ .Branch }}-{{ epoch }}
           paths:
-            - ~/caches/doc-utils-common.tar
+            - ~/caches/doc-utils-base.tar
       - run:
-          name: Build doc-utils-binaries Docker image
+          name: Build doc-utils-common Docker image
           command: |
-            cd doc-utils-binaries && docker build -t doc-utils-binaries . && cd ..
+            docker build -t doc-utils-common doc-utils-common/.
+      - run:
+          name: Build doc-utils-imghandler Docker image
+          command: |
+            docker build -t doc-utils-imghandler doc-utils-imghandler/.
+      - run:
+          name: Build doc-utils-pdfhandler Docker image
+          command: |
+            docker build -t doc-utils-pdfhandler doc-utils-pdfhandler/.
 #      - run:
 #          name: Build doc-utils-pythonlibs Docker image
 #          command: |
@@ -55,8 +63,9 @@ jobs:
       - run:
           name: Deploy doc-utils-binaries layer
           command: |
-            ./linux-amd64-img2lambda -n docutils-bin -i doc-utils-binaries:latest -r us-west-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give extra binaries relevant for document inspection/extraction"
-            ./linux-amd64-img2lambda -n docutils-bin -i doc-utils-binaries:latest -r ap-southeast-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give extra binaries relevant for document inspection/extraction"
+            ./linux-amd64-img2lambda -n docutils-bin -i doc-utils-common:latest -r ap-southeast-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 to give extra binaries relevant for document inspection/extraction"
+            ./linux-amd64-img2lambda -n docutils-bin -i doc-utils-imghandler:latest -r ap-southeast-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 specific to images"
+            ./linux-amd64-img2lambda -n docutils-bin -i doc-utils-pdfhandler:latest -r ap-southeast-2 --cr python3.6 --cr python3.7 --desc "Add on layer for python 3.6 and 3.7 specific to PDF's"
 #     - store_artifacts:
 #          path: output/
 #          destination: artifacts
